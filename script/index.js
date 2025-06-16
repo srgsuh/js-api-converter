@@ -34,7 +34,7 @@ class Form{
 
     _fillCurrencyOptions(selectElement, symbols) {
         Object.entries(symbols).forEach(([code, name]) => {
-            selectElement.add(new Option(`${name}`, code));
+            selectElement.add(new Option(`${name} (${code})`, code));
         });
     }
 
@@ -131,10 +131,9 @@ class Form{
     }
 }
 
-// const form = new Form(new Converter(mainConfig.apiKey, mainConfig.url));
-const form = new Form(new MockConverter());
 
+const mockConverter = new MockConverter();
+const realConverter = new Converter(mainConfig.apiKey, mainConfig.url);
 
-
-//converter.convert({to:'EUR',from:'GEL', amount: 100}, console.log);
-//converter.symbols(fillForm);
+//const form = new Form(mockConverter);
+const form = new Form(realConverter);

@@ -13,8 +13,8 @@ class Converter {
         return headers;
     }
 
-    async convert({to, from, amount}) {
-        const requestUrl = `${this._url}/convert?to=${to}&from=${from}&amount=${amount}`;
+    async convert({toValue, fromValue, amount}) {
+        const requestUrl = `${this._url}/convert?to=${toValue}&from=${fromValue}&amount=${amount}`;
 
         const requestOptions = {
             method: 'GET',
@@ -26,7 +26,9 @@ class Converter {
         if (!response.ok) {
             throw new Error(`Server respond status: ${response.status}`);
         }
-        return response.json();
+        const obj = await response.json();
+        console.log("Convert receive: ", obj);
+        return obj;
     }
 
     async symbols() {
@@ -41,6 +43,7 @@ class Converter {
             throw new Error(`Server respond status: ${response.status}`);
         }
 
-        return response.json();
+        const obj = await response.json();
+        return obj.symbols;
     }
 }
