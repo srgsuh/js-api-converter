@@ -26,7 +26,7 @@ class MockConverter {
         return {
             USD: "American dollar",
             EUR: "Euro",
-            NIS: "New Israel Shekel"
+            NIS: "New Israel Sheqel",
         }
     }
 

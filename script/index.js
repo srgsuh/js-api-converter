@@ -41,7 +41,7 @@ class Form{
     getInputData() {
         const {value: fromValue, text: fromText} = this.selectFrom.item(this.selectFrom.selectedIndex);
         const {value: toValue, text: toText} = this.selectTo.item(this.selectTo.selectedIndex);
-        const amount = this.inputAmount.value;
+        const amount = +this.inputAmount.value;
         return {
             fromValue,
             fromText,
@@ -54,10 +54,10 @@ class Form{
     _validate({fromValue, fromText, toValue, toText, amount}) {
         const errors = [];
         if (!fromValue) {
-            errors.push('From currency is required');
+            errors.push('Currency to convert is required');
         }
         if (!toValue) {
-            errors.push('To currency is required');
+            errors.push('Currency to receive is required');
         }
         if (fromValue && toValue && fromValue === toValue) {
             errors.push(`You cannot convert ${fromText} to a ${toText}`);
