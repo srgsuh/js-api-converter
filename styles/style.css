@@ -3,12 +3,11 @@
 }
 .error-output {
     color: red;
-    background-color: white;
 }
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin: 0;
-    background: #5992c9;
+    background: rgba(197, 197, 116, 0.95);
 }
 #request-container {
     width: 500px;

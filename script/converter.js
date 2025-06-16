@@ -16,14 +16,16 @@ class Converter {
     async convert({to, from, amount}) {
         const requestUrl = `${this._url}/convert?to=${to}&from=${from}&amount=${amount}`;
 
-
         const requestOptions = {
             method: 'GET',
             redirect: 'follow',
             headers: this._buildHeaders(),
         };
-
         const response = await fetch(requestUrl, requestOptions);
+
+        if (!response.ok) {
+            throw new Error(`Server respond status: ${response.status}`);
+        }
         return response.json();
     }
 
@@ -34,6 +36,11 @@ class Converter {
             headers: this._buildHeaders(),
         };
         const response = await fetch(requestUrl, requestOptions);
+
+        if (!response.ok) {
+            throw new Error(`Server respond status: ${response.status}`);
+        }
+
         return response.json();
     }
 }

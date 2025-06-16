@@ -24,10 +24,12 @@ class Form{
         this._init();
     }
     _init() {
-        this.converter.symbols().then(symbols => {
-            this._fillCurrencyOptions(this.selectFrom, symbols);
-            this._fillCurrencyOptions(this.selectTo, symbols);
-        })
+        this.converter.symbols()
+            .then(symbols => {
+                this._fillCurrencyOptions(this.selectFrom, symbols);
+                this._fillCurrencyOptions(this.selectTo, symbols);
+            })
+            .catch((err) => {this.showErrors(['Network error: ' + err.message]);});
     }
 
     _fillCurrencyOptions(selectElement, symbols) {
@@ -79,22 +81,19 @@ class Form{
 
     convertClick() {
         this.disableButton();
-        this.hideErrors();
+        this.clearOutputs();
         const inputData = this.getInputData();
         const errors = this._validate(inputData);
-        errors.length > 0? this.showErrors(errors): this.convert(inputData);
+        if (errors.length > 0) {
+            this.showErrors(errors);
+            return;
+        }
+        this.convert(inputData);
     }
 
-    hideErrors() {
+    clearOutputs() {
         this.errorOutput.innerHTML = '';
-    }
-
-    showErrors(errors) {
-        console.log(errors);
-        const p = document.createElement('p');
-        p.textContent = errors.join(', ');
-        this.errorOutput.append(p);
-        this.enableButton();
+        this.resultContainer.innerHTML = '';
     }
 
     convert(inputData) {
@@ -102,19 +101,38 @@ class Form{
             .then(obj => {
                 this.showConvertResult(obj.success, obj.result, obj.query);
             })
+            .catch(err => {
+                this.showErrors(["Ошибка при выполнении запроса: " + err.message]);
+            })
     }
 
     showConvertResult(success, result, query) {
         console.log(success, result, query);
+
+        this.clearOutputs();
+
         const p = document.createElement('p');
-        p.textContent = `You give ${query.amount} of ${query.from} and receive ${result} of ${query.to}`;
+        p.textContent = `You give ${query.amount} ${query.from} => you receive ${result} ${query.to}`;
         this.resultContainer.append(p);
+
+        this.enableButton();
+    }
+
+    showErrors(errors) {
+        console.error(errors);
+
+        this.clearOutputs();
+
+        const p = document.createElement('p');
+        p.textContent = errors.join(', ');
+        this.errorOutput.append(p);
+
         this.enableButton();
     }
 }
 
 // const form = new Form(new Converter(mainConfig.apiKey, mainConfig.url));
-const form = new Form(new MockConverter(mainConfig.apiKey, mainConfig.url));
+const form = new Form(new MockConverter());
 
 
 
