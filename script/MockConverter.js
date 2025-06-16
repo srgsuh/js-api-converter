@@ -35,7 +35,7 @@ class MockConverter {
 
         this.mockError('Mock server error occurred while requesting conversion');
 
-        const rate = 2.0;
+        const rate = 3.95;
         return {
             date: "2025-06-15",
             historical: "",
