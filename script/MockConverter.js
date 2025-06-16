@@ -35,12 +35,12 @@ class MockConverter {
 
         this.mockError('Mock server error occurred while requesting conversion');
 
-        const rate = 3.95;
-        return {
+        const exchangeRate = 3.95;
+        const conversion = {
             date: "2025-06-15",
             historical: "",
             info: {
-                rate,
+                rate: exchangeRate,
                 timestamp: 1519328414
             },
             query: {
@@ -48,8 +48,15 @@ class MockConverter {
                 from: fromValue,
                 to: toValue
             },
-            result: rate * amount,
+            result: exchangeRate * amount,
             success: true
         }
+        return new ConvertResult(
+            conversion.query.from,
+            conversion.query.to,
+            conversion.query.amount,
+            conversion.result,
+            conversion.info.rate,
+        );
     }
 }

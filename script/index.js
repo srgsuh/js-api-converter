@@ -98,22 +98,34 @@ class Form{
 
     convert(inputData) {
         this.converter.convert(inputData)
-            .then(obj => {
-                this.showConvertResult(obj.success, obj.result, obj.query);
+            .then(conversion => {
+                this.showConvertResult(conversion);
             })
             .catch(err => {
                 this.showErrors(["Ошибка при выполнении запроса: " + err.message]);
             })
     }
 
-    showConvertResult(success, result, query) {
-        console.log(success, result, query);
+    pFromText(text) {
+        const p = document.createElement('p');
+        p.textContent = text;
+        return p;
+    }
+
+    showConvertResult(conversion) {
+        console.log('showConvertResult', conversion);
+        const {currencyToGive, currencyToGet, amountToGive, amountToGet, exchangeRate} = conversion;
 
         this.clearOutputs();
 
-        const p = document.createElement('p');
-        p.textContent = `You give ${query.amount} ${query.from} => you receive ${result} ${query.to}`;
-        this.resultContainer.append(p);
+        this.resultContainer.append(
+            this.pFromText(
+                `You can convert ${amountToGive} ${currencyToGive} to ${amountToGet} ${currencyToGet}`
+            ),
+            this.pFromText(
+                `An exchange rate is: ${exchangeRate}`
+            )
+        );
 
         this.enableButton();
     }

@@ -26,9 +26,10 @@ class Converter {
         if (!response.ok) {
             throw new Error(`Server respond status: ${response.status}`);
         }
-        const obj = await response.json();
-        console.log("Convert receive: ", obj);
-        return obj;
+        const conversion = await response.json();
+        console.log("Convert receive: ", conversion);
+
+        return new ConvertResult(conversion.query.from, conversion.query.to, conversion.query.amount, conversion.result, conversion.info.rate);
     }
 
     async symbols() {
